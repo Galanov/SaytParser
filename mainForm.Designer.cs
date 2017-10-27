@@ -31,10 +31,21 @@
             this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.webSessionProvider1 = new Awesomium.Windows.Forms.WebSessionProvider(this.components);
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.containerGroupBox = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dopInfoTextBox = new System.Windows.Forms.TextBox();
+            this.genderGroupBox = new System.Windows.Forms.GroupBox();
+            this.genderWomenRadioButton = new System.Windows.Forms.RadioButton();
+            this.genderMaleRadioButton = new System.Windows.Forms.RadioButton();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.nationalityOtherRadioButton = new System.Windows.Forms.RadioButton();
+            this.nationalityKazRadioButton = new System.Windows.Forms.RadioButton();
+            this.nationalityBelRadioButton = new System.Windows.Forms.RadioButton();
+            this.nationalityRusRadioButton = new System.Windows.Forms.RadioButton();
+            this.vacancyTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ageTextBox = new System.Windows.Forms.TextBox();
             this.saveAnketaButton = new System.Windows.Forms.Button();
-            this.genderCheckedListBox = new System.Windows.Forms.CheckedListBox();
-            this.nationalityCheckListBox = new System.Windows.Forms.CheckedListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -46,7 +57,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.infoLabel = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.lastNameTextBox = new System.Windows.Forms.TextBox();
@@ -60,8 +70,13 @@
             this.openSiteButton = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.закрытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.groupBox1.SuspendLayout();
+            this.label13 = new System.Windows.Forms.Label();
+            this.salaryTextBox = new System.Windows.Forms.TextBox();
+            this.metroTextBox = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.containerGroupBox.SuspendLayout();
+            this.genderGroupBox.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,43 +91,180 @@
             this.tabControl1.Size = new System.Drawing.Size(1105, 412);
             this.tabControl1.TabIndex = 1;
             // 
-            // groupBox1
+            // containerGroupBox
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.containerGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Controls.Add(this.saveAnketaButton);
-            this.groupBox1.Controls.Add(this.genderCheckedListBox);
-            this.groupBox1.Controls.Add(this.nationalityCheckListBox);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.emailTextBox);
-            this.groupBox1.Controls.Add(this.birthdayTextBox);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.infoLabel);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.lastNameTextBox);
-            this.groupBox1.Controls.Add(this.nameTextBox);
-            this.groupBox1.Controls.Add(this.cityTextBox);
-            this.groupBox1.Controls.Add(this.mobPhoneTextBox);
-            this.groupBox1.Controls.Add(this.homePhoneTextBox);
-            this.groupBox1.Controls.Add(this.middleNameTextBox);
-            this.groupBox1.Controls.Add(this.createAnketaButton);
-            this.groupBox1.Controls.Add(this.siteComboBox);
-            this.groupBox1.Controls.Add(this.openSiteButton);
-            this.groupBox1.Location = new System.Drawing.Point(0, 405);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1105, 178);
-            this.groupBox1.TabIndex = 31;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
+            this.containerGroupBox.Controls.Add(this.label14);
+            this.containerGroupBox.Controls.Add(this.metroTextBox);
+            this.containerGroupBox.Controls.Add(this.salaryTextBox);
+            this.containerGroupBox.Controls.Add(this.label13);
+            this.containerGroupBox.Controls.Add(this.label4);
+            this.containerGroupBox.Controls.Add(this.dopInfoTextBox);
+            this.containerGroupBox.Controls.Add(this.genderGroupBox);
+            this.containerGroupBox.Controls.Add(this.groupBox2);
+            this.containerGroupBox.Controls.Add(this.vacancyTextBox);
+            this.containerGroupBox.Controls.Add(this.label2);
+            this.containerGroupBox.Controls.Add(this.ageTextBox);
+            this.containerGroupBox.Controls.Add(this.saveAnketaButton);
+            this.containerGroupBox.Controls.Add(this.label5);
+            this.containerGroupBox.Controls.Add(this.label11);
+            this.containerGroupBox.Controls.Add(this.label12);
+            this.containerGroupBox.Controls.Add(this.emailTextBox);
+            this.containerGroupBox.Controls.Add(this.birthdayTextBox);
+            this.containerGroupBox.Controls.Add(this.label10);
+            this.containerGroupBox.Controls.Add(this.label9);
+            this.containerGroupBox.Controls.Add(this.label8);
+            this.containerGroupBox.Controls.Add(this.label7);
+            this.containerGroupBox.Controls.Add(this.label6);
+            this.containerGroupBox.Controls.Add(this.infoLabel);
+            this.containerGroupBox.Controls.Add(this.label3);
+            this.containerGroupBox.Controls.Add(this.label1);
+            this.containerGroupBox.Controls.Add(this.lastNameTextBox);
+            this.containerGroupBox.Controls.Add(this.nameTextBox);
+            this.containerGroupBox.Controls.Add(this.cityTextBox);
+            this.containerGroupBox.Controls.Add(this.mobPhoneTextBox);
+            this.containerGroupBox.Controls.Add(this.homePhoneTextBox);
+            this.containerGroupBox.Controls.Add(this.middleNameTextBox);
+            this.containerGroupBox.Controls.Add(this.createAnketaButton);
+            this.containerGroupBox.Controls.Add(this.siteComboBox);
+            this.containerGroupBox.Controls.Add(this.openSiteButton);
+            this.containerGroupBox.Location = new System.Drawing.Point(0, 405);
+            this.containerGroupBox.Name = "containerGroupBox";
+            this.containerGroupBox.Size = new System.Drawing.Size(1105, 178);
+            this.containerGroupBox.TabIndex = 31;
+            this.containerGroupBox.TabStop = false;
+            this.containerGroupBox.Text = "Анкета";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(491, 49);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(98, 13);
+            this.label4.TabIndex = 64;
+            this.label4.Text = "Доп. информация";
+            // 
+            // dopInfoTextBox
+            // 
+            this.dopInfoTextBox.Location = new System.Drawing.Point(595, 49);
+            this.dopInfoTextBox.Name = "dopInfoTextBox";
+            this.dopInfoTextBox.Size = new System.Drawing.Size(180, 20);
+            this.dopInfoTextBox.TabIndex = 63;
+            // 
+            // genderGroupBox
+            // 
+            this.genderGroupBox.Controls.Add(this.genderWomenRadioButton);
+            this.genderGroupBox.Controls.Add(this.genderMaleRadioButton);
+            this.genderGroupBox.Location = new System.Drawing.Point(480, 72);
+            this.genderGroupBox.Name = "genderGroupBox";
+            this.genderGroupBox.Size = new System.Drawing.Size(113, 36);
+            this.genderGroupBox.TabIndex = 62;
+            this.genderGroupBox.TabStop = false;
+            this.genderGroupBox.Text = "Пол";
+            // 
+            // genderWomenRadioButton
+            // 
+            this.genderWomenRadioButton.AutoSize = true;
+            this.genderWomenRadioButton.Location = new System.Drawing.Point(55, 12);
+            this.genderWomenRadioButton.Name = "genderWomenRadioButton";
+            this.genderWomenRadioButton.Size = new System.Drawing.Size(36, 17);
+            this.genderWomenRadioButton.TabIndex = 59;
+            this.genderWomenRadioButton.TabStop = true;
+            this.genderWomenRadioButton.Text = "Ж";
+            this.genderWomenRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // genderMaleRadioButton
+            // 
+            this.genderMaleRadioButton.AutoSize = true;
+            this.genderMaleRadioButton.Location = new System.Drawing.Point(14, 12);
+            this.genderMaleRadioButton.Name = "genderMaleRadioButton";
+            this.genderMaleRadioButton.Size = new System.Drawing.Size(34, 17);
+            this.genderMaleRadioButton.TabIndex = 58;
+            this.genderMaleRadioButton.TabStop = true;
+            this.genderMaleRadioButton.Text = "М";
+            this.genderMaleRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.nationalityOtherRadioButton);
+            this.groupBox2.Controls.Add(this.nationalityKazRadioButton);
+            this.groupBox2.Controls.Add(this.nationalityBelRadioButton);
+            this.groupBox2.Controls.Add(this.nationalityRusRadioButton);
+            this.groupBox2.Location = new System.Drawing.Point(480, 106);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(295, 40);
+            this.groupBox2.TabIndex = 60;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Гражданство";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // nationalityOtherRadioButton
+            // 
+            this.nationalityOtherRadioButton.AutoSize = true;
+            this.nationalityOtherRadioButton.Location = new System.Drawing.Point(216, 14);
+            this.nationalityOtherRadioButton.Name = "nationalityOtherRadioButton";
+            this.nationalityOtherRadioButton.Size = new System.Drawing.Size(62, 17);
+            this.nationalityOtherRadioButton.TabIndex = 61;
+            this.nationalityOtherRadioButton.TabStop = true;
+            this.nationalityOtherRadioButton.Text = "Другое";
+            this.nationalityOtherRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // nationalityKazRadioButton
+            // 
+            this.nationalityKazRadioButton.AutoSize = true;
+            this.nationalityKazRadioButton.Location = new System.Drawing.Point(134, 16);
+            this.nationalityKazRadioButton.Name = "nationalityKazRadioButton";
+            this.nationalityKazRadioButton.Size = new System.Drawing.Size(78, 17);
+            this.nationalityKazRadioButton.TabIndex = 60;
+            this.nationalityKazRadioButton.TabStop = true;
+            this.nationalityKazRadioButton.Text = "Казахстан";
+            this.nationalityKazRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // nationalityBelRadioButton
+            // 
+            this.nationalityBelRadioButton.AutoSize = true;
+            this.nationalityBelRadioButton.Location = new System.Drawing.Point(55, 14);
+            this.nationalityBelRadioButton.Name = "nationalityBelRadioButton";
+            this.nationalityBelRadioButton.Size = new System.Drawing.Size(73, 17);
+            this.nationalityBelRadioButton.TabIndex = 59;
+            this.nationalityBelRadioButton.TabStop = true;
+            this.nationalityBelRadioButton.Text = "Беларусь";
+            this.nationalityBelRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // nationalityRusRadioButton
+            // 
+            this.nationalityRusRadioButton.AutoSize = true;
+            this.nationalityRusRadioButton.Location = new System.Drawing.Point(6, 14);
+            this.nationalityRusRadioButton.Name = "nationalityRusRadioButton";
+            this.nationalityRusRadioButton.Size = new System.Drawing.Size(43, 17);
+            this.nationalityRusRadioButton.TabIndex = 58;
+            this.nationalityRusRadioButton.TabStop = true;
+            this.nationalityRusRadioButton.Text = "РФ";
+            this.nationalityRusRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // vacancyTextBox
+            // 
+            this.vacancyTextBox.Location = new System.Drawing.Point(372, 152);
+            this.vacancyTextBox.Name = "vacancyTextBox";
+            this.vacancyTextBox.Size = new System.Drawing.Size(403, 20);
+            this.vacancyTextBox.TabIndex = 61;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(246, 154);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(120, 13);
+            this.label2.TabIndex = 60;
+            this.label2.Text = "Желаемая должность";
+            // 
+            // ageTextBox
+            // 
+            this.ageTextBox.Location = new System.Drawing.Point(341, 126);
+            this.ageTextBox.Name = "ageTextBox";
+            this.ageTextBox.Size = new System.Drawing.Size(133, 20);
+            this.ageTextBox.TabIndex = 59;
             // 
             // saveAnketaButton
             // 
@@ -123,32 +275,6 @@
             this.saveAnketaButton.Text = "Сохранить анкету";
             this.saveAnketaButton.UseVisualStyleBackColor = true;
             this.saveAnketaButton.Click += new System.EventHandler(this.saveAnketaButton_Click_1);
-            // 
-            // genderCheckedListBox
-            // 
-            this.genderCheckedListBox.CheckOnClick = true;
-            this.genderCheckedListBox.FormattingEnabled = true;
-            this.genderCheckedListBox.Items.AddRange(new object[] {
-            "Мужской",
-            "Женский"});
-            this.genderCheckedListBox.Location = new System.Drawing.Point(341, 128);
-            this.genderCheckedListBox.Name = "genderCheckedListBox";
-            this.genderCheckedListBox.Size = new System.Drawing.Size(133, 34);
-            this.genderCheckedListBox.TabIndex = 55;
-            this.genderCheckedListBox.SelectedIndexChanged += new System.EventHandler(this.genderCheckedListBox_SelectedIndexChanged);
-            // 
-            // nationalityCheckListBox
-            // 
-            this.nationalityCheckListBox.FormattingEnabled = true;
-            this.nationalityCheckListBox.Items.AddRange(new object[] {
-            "РФ",
-            "Беларусь",
-            "Казахстан",
-            "Другое"});
-            this.nationalityCheckListBox.Location = new System.Drawing.Point(498, 99);
-            this.nationalityCheckListBox.Name = "nationalityCheckListBox";
-            this.nationalityCheckListBox.Size = new System.Drawing.Size(133, 64);
-            this.nationalityCheckListBox.TabIndex = 54;
             // 
             // label5
             // 
@@ -239,29 +365,20 @@
             // infoLabel
             // 
             this.infoLabel.AutoSize = true;
-            this.infoLabel.Location = new System.Drawing.Point(593, 23);
+            this.infoLabel.Location = new System.Drawing.Point(592, 23);
             this.infoLabel.Name = "infoLabel";
             this.infoLabel.Size = new System.Drawing.Size(50, 13);
             this.infoLabel.TabIndex = 43;
             this.infoLabel.Text = "Message";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(495, 72);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 13);
-            this.label4.TabIndex = 42;
-            this.label4.Text = "Гражданство:";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(246, 133);
+            this.label3.Location = new System.Drawing.Point(246, 129);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(30, 13);
+            this.label3.Size = new System.Drawing.Size(52, 13);
             this.label3.TabIndex = 41;
-            this.label3.Text = "Пол:";
+            this.label3.Text = "Возраст:";
             // 
             // label1
             // 
@@ -374,29 +491,54 @@
             this.закрытьToolStripMenuItem.Text = "Закрыть";
             this.закрытьToolStripMenuItem.Click += new System.EventHandler(this.закрытьToolStripMenuItem_Click);
             // 
-            // radioButton1
+            // label13
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(702, 33);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(85, 17);
-            this.radioButton1.TabIndex = 57;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "radioButton1";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(602, 79);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(25, 13);
+            this.label13.TabIndex = 65;
+            this.label13.Text = "ЗП:";
+            // 
+            // salaryTextBox
+            // 
+            this.salaryTextBox.Location = new System.Drawing.Point(633, 78);
+            this.salaryTextBox.Name = "salaryTextBox";
+            this.salaryTextBox.Size = new System.Drawing.Size(142, 20);
+            this.salaryTextBox.TabIndex = 66;
+            // 
+            // metroTextBox
+            // 
+            this.metroTextBox.Location = new System.Drawing.Point(901, 46);
+            this.metroTextBox.Name = "metroTextBox";
+            this.metroTextBox.Size = new System.Drawing.Size(180, 20);
+            this.metroTextBox.TabIndex = 67;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(809, 52);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(86, 13);
+            this.label14.TabIndex = 68;
+            this.label14.Text = "Cтанция метро:";
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1105, 581);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.containerGroupBox);
             this.Controls.Add(this.tabControl1);
             this.Name = "mainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.mainForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.containerGroupBox.ResumeLayout(false);
+            this.containerGroupBox.PerformLayout();
+            this.genderGroupBox.ResumeLayout(false);
+            this.genderGroupBox.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -405,10 +547,8 @@
         #endregion
         private System.Windows.Forms.TabControl tabControl1;
         private Awesomium.Windows.Forms.WebSessionProvider webSessionProvider1;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox containerGroupBox;
         private System.Windows.Forms.Button saveAnketaButton;
-        private System.Windows.Forms.CheckedListBox genderCheckedListBox;
-        private System.Windows.Forms.CheckedListBox nationalityCheckListBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
@@ -420,7 +560,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label infoLabel;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox lastNameTextBox;
@@ -434,7 +573,23 @@
         private System.Windows.Forms.Button openSiteButton;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem закрытьToolStripMenuItem;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton nationalityBelRadioButton;
+        private System.Windows.Forms.RadioButton nationalityRusRadioButton;
+        private System.Windows.Forms.TextBox vacancyTextBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox ageTextBox;
+        private System.Windows.Forms.GroupBox genderGroupBox;
+        private System.Windows.Forms.RadioButton genderWomenRadioButton;
+        private System.Windows.Forms.RadioButton genderMaleRadioButton;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox dopInfoTextBox;
+        private System.Windows.Forms.RadioButton nationalityOtherRadioButton;
+        private System.Windows.Forms.RadioButton nationalityKazRadioButton;
+        private System.Windows.Forms.TextBox salaryTextBox;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox metroTextBox;
     }
 }
 

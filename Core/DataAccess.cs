@@ -4,12 +4,19 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ZaraCut.Core
 {
-    public class DataAccess
+    public class DataAccess:IDisposable
     {
+        Result result;
+        public DataAccess(Result result)
+        {
+            this.result = result;
+        }
         public void SaveData(Anketa anketa, User user)
         {
             //if (Convert.ToInt32(this.LoginId) == -1)
@@ -17,19 +24,34 @@ namespace ZaraCut.Core
             //    MessageBox.Show("LoginId = -1");
             //    return;
             //}
+            //Task taskMessage = new Task(()=>
+            //result.Message(Color.Green, "Сохранение..."));
+            //taskMessage.Start();
             if (anketa.MobPhone =="" || anketa.City==""||anketa.FirstName==""||anketa.LastName=="")
             {
                 MessageBox.Show("Заполнены не все обязательные поля!");
                 return;
             }
+            
             SqlConnection sqlConnection = new SqlConnection(Path.SQLPath);
+            sqlConnection.Open();
+            #region GetIdCity
             int idCity = GetIdCity(sqlConnection, anketa.City);
             if (idCity==0)
             {
                 sqlConnection.Close();
                 MessageBox.Show("Город не распознан");
+                result.Message(Color.Red, "Ошибка, Анкета не сохранена. Обратитесь к системноиу администратору.");
                 return;
             }
+            #endregion
+            #region GetIdMetro
+            string idmetro = "";
+            if (anketa.Metro!="")
+            {
+                idmetro = GetIdMetro(sqlConnection, anketa.Metro);
+            }
+            #endregion
             if (anketa.MobPhone.Replace("-", "").Trim().Length + anketa.HomePhone.Replace("-", "").Trim().Length != 0)
             {
                 //SqlConnection sqlConnection = new SqlConnection(sql);
@@ -79,8 +101,9 @@ namespace ZaraCut.Core
                                 {
                                     t = (DateTime)sqlDataReader[0];
                                 }
-                                catch
+                                catch(Exception ex)
                                 {
+                                    result.Message(Color.Red, "Ошибка, Анкета не сохранена.");
                                 }
                             }
                             sqlDataReader.Close();
@@ -96,10 +119,12 @@ namespace ZaraCut.Core
                                 }), sqlConnection);
                                 sqlCommand.ExecuteNonQuery();
                                 MessageBox.Show("Запись выполнена");
+                                result.Message(Color.Green, "Анкета сохранена.");
                             }
                             else
                             {
                                 MessageBox.Show("Такая карточка уже существует");
+                                result.Message(Color.Red, "Анкета не сохранена.");
                             }
                             return;
                         }
@@ -109,14 +134,23 @@ namespace ZaraCut.Core
                 catch(Exception ex)
                 {
                     //sqlConnection.Close();
-                    MessageBox.Show("Ошибка №4");
+                    //MessageBox.Show("Ошибка №4");
+                    //        taskMessage = new Task(() =>
+                    //result.Message(Color.Red, "Ошибка, Анкета не сохранена."));
+                    //        taskMessage.Start();
+                    result.Message(Color.Red, "Ошибка, Анкета не сохранена.");
                     return;
                 }
                 finally
                 {
                     //sqlConnection.Close();
                 }
-                sqlCommand = new SqlCommand("EXECUTE SaveAnketa @LastName  ,@Name  ,@MiddleName  ,@MobPhone  ,@HomePhone  ,@Email  ,@CityId  ,@Birthday  ,@Sex  ,@Citizenship  ,@SourceId  ,@CardId  ,@OutCardId OUTPUT  ,@loginId  ,@SessionId, @visit ", sqlConnection);
+                anketa.Salary = CutString(anketa.Salary, 100);
+                anketa.Vacancy = CutString(anketa.Vacancy, 255);
+                anketa.Info = CutString(anketa.Info, 255);
+                sqlCommand = new SqlCommand(@"EXECUTE SaveAnketa @LastName  ,@Name  ,@MiddleName  ,@MobPhone  
+,@HomePhone  ,@Email  ,@CityId  ,@Birthday  ,@Sex,@Citizenship  ,@SourceId ,@Age ,@Salary,@Vacancy,@Info ,@StationHomeVal
+,@CardId  ,@OutCardId OUTPUT  ,@loginId  ,@SessionId, @visit ", sqlConnection);
                 SqlParameterCollection parameters = sqlCommand.Parameters;
                 parameters.Add("LastName", SqlDbType.VarChar, 50);
                 parameters["LastName"].Value = anketa.LastName;
@@ -134,8 +168,16 @@ namespace ZaraCut.Core
                 parameters["CityId"].Value = idCity;
                 //parameters.Add("CardSourceId", SqlDbType.Int);
                 //parameters["CardSourceId"].Value = anketa.Source;
-                //parameters.Add("StationHome", SqlDbType.VarChar, 50);
-                //parameters["StationHome"].Value = this.StationHomeId;
+                parameters.Add("StationHomeVal", SqlDbType.VarChar, 50);
+                parameters["StationHomeVal"].Value = idmetro;
+                parameters.Add("Age", SqlDbType.VarChar, 50);
+                parameters["Age"].Value = anketa.Age;
+                parameters.Add("Salary", SqlDbType.VarChar, 100);
+                parameters["Salary"].Value = anketa.Salary;
+                parameters.Add("Vacancy", SqlDbType.VarChar, 255);
+                parameters["Vacancy"].Value = anketa.Vacancy;
+                parameters.Add("Info", SqlDbType.VarChar, 255);
+                parameters["Info"].Value = anketa.Info;
                 parameters.Add("Birthday", SqlDbType.DateTime);
                 if (anketa.Birthday.Length == 0)
                 {
@@ -232,9 +274,18 @@ namespace ZaraCut.Core
                 try
                 {
                     sqlCommand.ExecuteNonQuery();
+                    MessageBox.Show("Анкета сохранена");
+                    result.Message(Color.Green, "Анкета сохранена.");
+                    //taskMessage = new Task(() =>
+                    //    result.Message(Color.Green, "Анкета сохранена."));
+                    //taskMessage.Start();
                 }
                 catch (Exception ex)
                 {
+                    //taskMessage = new Task(() =>
+                    //    result.Message(Color.Red, "Ошибка. Анкета не сохранена."));
+                    //taskMessage.Start();
+                    result.Message(Color.Red, "Ошибка. Анкета не сохранена.");
                     throw;
                 }
                 finally
@@ -247,7 +298,6 @@ namespace ZaraCut.Core
         public int GetIdCity(SqlConnection sqlConnection, string city)
         {
             int idCity=0;
-            sqlConnection.Open();
             SqlCommand sqlCommand = new SqlCommand("select isnull(max(cityid),0) Cityid from city where city ='" + city.Trim() + "'", sqlConnection);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             try
@@ -262,6 +312,36 @@ namespace ZaraCut.Core
                 sqlDataReader.Close();
             }
             return idCity;
+        }
+        private string CutString(string text, int length)
+        {
+            if (text.Length>length)
+            {
+                text = text.Substring(0, length-1);
+            }
+            return text;
+        }
+        private string GetIdMetro(SqlConnection sqlConnection, string metro)
+        {
+            string idMetro = "";
+            SqlCommand sqlCommand = new SqlCommand("select isnull(max(stationid),0) stationid from station where station ='" + metro.Trim() + "'", sqlConnection);
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            try
+            {
+                while (sqlDataReader.Read())
+                {
+                    idMetro = sqlDataReader["stationid"].ToString();
+                }
+            }
+            finally
+            {
+                sqlDataReader.Close();
+            }
+            idMetro = idMetro + ",";
+            return idMetro;
+        }
+        public void Dispose()
+        {
         }
     }
 }
