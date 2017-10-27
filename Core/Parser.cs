@@ -18,12 +18,18 @@ namespace ZaraCut.Core
            
         }
 
-        public Anketa ParseHH(string html,string html2)
+        public Anketa ParseHH(string html, string html2, string html3, string html4)
         {
             Anketa anketa = new Anketa();
             anketa.Source = 3;
             var parser = new HtmlParser();
             var document = parser.Parse(html);
+            #region Vacancy
+            anketa.Vacancy = html4;
+            #endregion
+            #region Salary
+            anketa.Salary = html3;
+            #endregion
             #region Nationality
             switch (html2)
             {
@@ -50,7 +56,6 @@ namespace ZaraCut.Core
 
             }
             #endregion
-
             //получение ФИО
             #region GetFIO
             var fioHTML = document.All.Where(m => m.LocalName == "h1" && m.ClassName == "header");
@@ -91,7 +96,6 @@ namespace ZaraCut.Core
             }
             //Console.WriteLine("{0} {1} {2}", anketa.FirstName, anketa.LastName, anketa.Patronymic);
             #endregion
-
             #region Gender
             var gender = ReturnValueFromAnketa(document,"[data-qa='resume-personal-gender']");
             gender = gender.ToLower();
@@ -99,12 +103,12 @@ namespace ZaraCut.Core
             {
                 case "женщина":
                     {
-                        anketa.Gender = 1;
+                        anketa.Gender = 2;
                         break;
                     }
                 case "мужчина":
                     {
-                        anketa.Gender = 2;
+                        anketa.Gender = 1;
                         break;
                     }
                 default:
@@ -115,24 +119,22 @@ namespace ZaraCut.Core
                     
             }
             #endregion
-
             #region Age
-            //var age= ReturnValueFromAnketa(document,"[data-qa='resume-personal-age']");
+            string age = ReturnValueFromAnketa(document, "[data-qa='resume-personal-age']");
             //if (age != "")
             //{
             //    //class='resume-header-block'
             //    var ageParser = ReturnValueFromAnketa(document, "[]");
             //    string[] masfio = ageParser.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             //}
+            anketa.Age = age;
             #endregion
-
             #region City
             //var city = document.QuerySelector("[data-qa='resume-personal-address']").TextContent;
             var city = ReturnValueFromAnketa(document, "[data-qa='resume-personal-address']");
             anketa.City = city;
             //anketa.City = GetIdCity(city);
             #endregion
-
             #region MobPhone
             //var phone = document.QuerySelector("[itemprop='telephone']").TextContent;
             var phone = ReturnValueFromAnketa(document, "[itemprop='telephone']");
@@ -140,21 +142,28 @@ namespace ZaraCut.Core
             {
                 phone = phone.Replace(" ", "");
                 phone = phone.Replace(" ", "");
-                phone = phone.Replace("\n+7", "8");
+                phone = phone.Replace("\n", "");
+                phone = phone.Replace("+7", "8");
             }
             anketa.MobPhone = phone;
             #endregion
-            
             #region Email
             //var email = document.QuerySelector("[itemprop='email']").TextContent;
             var email = ReturnValueFromAnketa(document, "[itemprop='email']");
             anketa.Email = email;
             #endregion
+            #region Metro
+            var metro = ReturnValueFromAnketa(document, "[data-qa='resume-personal-metro']");
+            if (metro != "")
+            {
+                metro = metro.Replace("м. ", "");
+            }
+            anketa.Metro = metro;
+            #endregion
             anketa.Birthday = "";
             anketa.HomePhone = "";
             return anketa;
             //System.IndexOutOfRangeException
-
             //1 element
             //var emphasize = document.QuerySelector("em");
             //Console.WriteLine(emphasize.ToHtml());   //<em> bold <u>and</u> italic </em>
@@ -168,6 +177,29 @@ namespace ZaraCut.Core
             ////Or directly with CSS selectors
             //var blueListItemsCssSelector = document.QuerySelectorAll("li.blue");
 
+        }
+
+        private string GetIdMetro(string metro)
+        {
+            string idMetro = "";
+            SqlConnection sqlConnection = new SqlConnection(Path.SQLPath);
+            sqlConnection.Open();
+            //sqlConnection.Open();
+            SqlCommand sqlCommand = new SqlCommand("select isnull(max(stationid),0) stationid from station where station ='" + metro.Trim() + "'", sqlConnection);
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            try
+            {
+                while (sqlDataReader.Read())
+                {
+                    idMetro = sqlDataReader["stationid"].ToString();
+                }
+            }
+            finally
+            {
+                sqlDataReader.Close();
+            }
+            idMetro = idMetro + ",";
+            return idMetro;
         }
         private int GetIdCity(string city)
         {

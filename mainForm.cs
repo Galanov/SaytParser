@@ -22,7 +22,7 @@ namespace ZaraCut
         private TabControlAwesomium tCA;
         User user;
         Anketa anketa;
-
+        Result result;
         
         private string VersionId = "2";
         public mainForm()
@@ -34,6 +34,9 @@ namespace ZaraCut
             tabControl1.ContextMenuStrip = contextMenuStrip1;
             tCA = new  TabControlAwesomium(tabControl1, webSessionProvider1);
             user = new User();
+            result = new Result(infoLabel);
+            //result.Message = "Test";
+            //result.MessageColor = Color.Red;
         }
 
         private void saveAnketaButton_Click(object sender, EventArgs e)
@@ -68,27 +71,65 @@ namespace ZaraCut
             }
             catch
             {; }
-
-            using (PageParser pageParser = new PageParser())
+            string result3 = "";
+            try
             {
-                anketa = pageParser.ParseHH(result, result2);
+                result3 = document.QuerySelector("[data-qa='resume-block-salary']").TextContent;
             }
-            if (anketa != null)
+            catch
+            {; }
+            string result4 = "";
+            try
             {
-                ShowResultOnForm(anketa);
+                result4 = document.QuerySelector("[data-qa='resume-block-title-position']").TextContent;
+            }
+            catch
+            {; }
+            if (result!="")
+            {
+                using (PageParser pageParser = new PageParser())
+                {
+                    anketa = pageParser.ParseHH(result, result2, result3, result4);
+                }
+                if (anketa != null)
+                {
+                    anketa.Info = dopInfoTextBox.Text;
+                    ShowResultOnForm(anketa);
+                }
+            }
+            else
+            {
+                this.result.Message(Color.Red, "HTML не найден");
             }
         }
 
         private void ClearForm()
         {
-            lastNameTextBox.Text = "";
-            middleNameTextBox.Text = "";
-            nameTextBox.Text = "";
-            mobPhoneTextBox.Text = "";
-            homePhoneTextBox.Text = "";
-            cityTextBox.Text = "";
-            emailTextBox.Text = "";
-            birthdayTextBox.Text = "";
+
+            //lastNameTextBox.Text = "";
+            //middleNameTextBox.Text = "";
+            //nameTextBox.Text = "";
+            //mobPhoneTextBox.Text = "";
+            //homePhoneTextBox.Text = "";
+            //cityTextBox.Text = "";
+            //emailTextBox.Text = "";
+            //birthdayTextBox.Text = "";
+            foreach (object item in containerGroupBox. Controls)
+            {
+                if (item is TextBox)
+                {
+                    TextBox tb = (TextBox)item;
+                    if (tb.Name!= "dopInfoTextBox")
+                    {
+                        tb.Text = "";
+                    }
+                }
+                if (item is RadioButton)
+                {
+                    RadioButton rb = (RadioButton)item;
+                    rb.Checked = false;
+                }
+            }
         }
 
         private void ShowResultOnForm(Anketa anketa)
@@ -101,47 +142,54 @@ namespace ZaraCut
             cityTextBox.Text = anketa.City;
             emailTextBox.Text = anketa.Email;
             birthdayTextBox.Text = anketa.Birthday;
-            //switch (anketa.Gender)
-            //{
-            //    case 1:
-            //        {
-            //            genderCheckedListBox.SelectedIndex = -1;
-            //            break;
-            //        }
-            //    case 2:
-            //        {
-            //            genderCheckedListBox.SelectedIndex = -1;
-            //            break;
-            //        }
-            //    default:
-            //        {
-            //            genderCheckedListBox.SelectedIndex = -1;
-            //            break;
-            //        }
-            //}
-            //switch (anketa.Nationality)
-            //{
-            //    case 1:
-            //        {
-            //            nationalityCheckListBox.SelectedIndex = 0;
-            //            break;
-            //        }
-            //    case 2:
-            //        {
-            //            nationalityCheckListBox.SelectedIndex = 1;
-            //            break;
-            //        }
-            //    case 3:
-            //        {
-            //            nationalityCheckListBox.SelectedIndex = 2;
-            //            break;
-            //        }
-            //    default:
-            //        {
-            //            nationalityCheckListBox.SelectedIndex = 3;
-            //            break;
-            //        }
-            //}
+            #region Gender
+            switch (anketa.Gender)
+            {
+                case 1:
+                    {
+                        genderMaleRadioButton.Checked = true;
+                        break;
+                    }
+                case 2:
+                    {
+                        genderWomenRadioButton.Checked = true;
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+            #endregion
+            #region Nationality
+            switch (anketa.Nationality)
+            {
+                case 1:
+                    {
+                        nationalityRusRadioButton.Checked = true;
+                        break;
+                    }
+                case 2:
+                    {
+                        nationalityBelRadioButton.Checked = true;
+                        break;
+                    }
+                case 3:
+                    {
+                        nationalityKazRadioButton.Checked = true;
+                        break;
+                    }
+                default:
+                    {
+                        nationalityOtherRadioButton.Checked = true;
+                        break;
+                    }
+            }
+            #endregion
+            ageTextBox.Text = anketa.Age;
+            salaryTextBox.Text = anketa.Salary;
+            vacancyTextBox.Text = anketa.Vacancy;
+            metroTextBox.Text = anketa.Metro;
         }
         private void createAnketaButton_Click(object sender, EventArgs e)
         {
@@ -222,16 +270,20 @@ namespace ZaraCut
 
         private void saveAnketaButton_Click_1(object sender, EventArgs e)
         {
-            tCA.ClearMemory();
+            //tCA.ClearMemory();
             if (anketa!=null)
             {
-                DataAccess da = new DataAccess();
-                da.SaveData(anketa, user);
+                using (DataAccess da = new DataAccess(result))
+                {
+                    da.SaveData(anketa, user);
+                } 
+                
             }
         }
 
         private void закрытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            tCA.ClearMemory();
             tCA.CloseSelectedTab();
         }
         private void mainForm_Load(object sender, EventArgs e)
@@ -313,6 +365,11 @@ namespace ZaraCut
         }
 
         private void genderCheckedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
         {
 
         }

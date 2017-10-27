@@ -76,5 +76,9 @@ namespace ZaraCut.Core
             set;
         }
         public string Age { get; set; }
+        public string Salary { get; set; }
+        public string Vacancy { get; set; }
+        public string Info { get; set; }
+        public string Metro { get; set; }
     }
 }
