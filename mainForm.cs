@@ -13,6 +13,7 @@ using ZaraCut.Core;
 using System.Data.SqlClient;
 using ZaraCut.Core.HH;
 using AngleSharp.Parser.Html;
+using System.Xml.Linq;
 
 namespace ZaraCut
 {
@@ -23,6 +24,7 @@ namespace ZaraCut
         User user;
         Anketa anketa;
         Result result;
+        List<Brand> brands;
         
         private string VersionId = "2";
         public mainForm()
@@ -35,8 +37,45 @@ namespace ZaraCut
             tCA = new  TabControlAwesomium(tabControl1, webSessionProvider1);
             user = new User();
             result = new Result(infoLabel);
+            brands = LoadBrandsFromXML();
             //result.Message = "Test";
             //result.MessageColor = Color.Red;
+        }
+
+        private List<Brand> LoadBrandsFromXML()
+        {
+            List<Brand> brands = new List<Brand>();
+            string path = "";
+            path = Environment.CurrentDirectory + "\\config.xml";
+            XDocument xdoc = XDocument.Load(path);
+            foreach (XElement phoneElement in xdoc.Element("brands").Elements("brand"))
+            {
+                XElement idElement = phoneElement.Element("id");
+                XElement nameElement = phoneElement.Element("name");
+                XElement visibleElement = phoneElement.Element("visible");
+
+                if (idElement != null && nameElement != null && visibleElement != null)
+                {
+                    Console.WriteLine("Смартфон: {0}", idElement.Value);
+                    Console.WriteLine("Компания: {0}", nameElement.Value);
+                    Console.WriteLine("Цена: {0}", visibleElement.Value);
+                    brands.Add(new Brand() { Id = Convert.ToInt32(idElement.Value), Name = nameElement.Value, Visible = Convert.ToBoolean(visibleElement.Value) });
+                }
+                
+
+                Console.WriteLine();
+            }
+            //var sortBrands
+            var sortBrands = brands.OrderBy(u => u.Name);
+            brands = null;
+            brands = new List<Brand>();
+            foreach (Brand brand in sortBrands)
+            {
+                brands.Add(brand);
+            }
+                
+
+            return brands;
         }
 
         private void saveAnketaButton_Click(object sender, EventArgs e)

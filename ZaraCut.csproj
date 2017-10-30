@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Anketa.cs" />
+    <Compile Include="Core\Brand.cs" />
     <Compile Include="Core\DataAccess.cs" />
     <Compile Include="Core\HH\HHAnketa.cs" />
     <Compile Include="Core\HH\HHParser.cs" />

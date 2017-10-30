@@ -80,5 +80,6 @@ namespace ZaraCut.Core
         public string Vacancy { get; set; }
         public string Info { get; set; }
         public string Metro { get; set; }
+        public string Brand { get; set; }
     }
 }

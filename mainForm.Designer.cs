@@ -32,6 +32,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.webSessionProvider1 = new Awesomium.Windows.Forms.WebSessionProvider(this.components);
             this.containerGroupBox = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.metroTextBox = new System.Windows.Forms.TextBox();
+            this.salaryTextBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.dopInfoTextBox = new System.Windows.Forms.TextBox();
             this.genderGroupBox = new System.Windows.Forms.GroupBox();
@@ -70,10 +74,8 @@
             this.openSiteButton = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.закрытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label13 = new System.Windows.Forms.Label();
-            this.salaryTextBox = new System.Windows.Forms.TextBox();
-            this.metroTextBox = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.containerGroupBox.SuspendLayout();
             this.genderGroupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -95,6 +97,8 @@
             // 
             this.containerGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.containerGroupBox.Controls.Add(this.label15);
+            this.containerGroupBox.Controls.Add(this.comboBox1);
             this.containerGroupBox.Controls.Add(this.label14);
             this.containerGroupBox.Controls.Add(this.metroTextBox);
             this.containerGroupBox.Controls.Add(this.salaryTextBox);
@@ -135,6 +139,38 @@
             this.containerGroupBox.TabIndex = 31;
             this.containerGroupBox.TabStop = false;
             this.containerGroupBox.Text = "Анкета";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(809, 52);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(86, 13);
+            this.label14.TabIndex = 68;
+            this.label14.Text = "Cтанция метро:";
+            // 
+            // metroTextBox
+            // 
+            this.metroTextBox.Location = new System.Drawing.Point(901, 46);
+            this.metroTextBox.Name = "metroTextBox";
+            this.metroTextBox.Size = new System.Drawing.Size(180, 20);
+            this.metroTextBox.TabIndex = 67;
+            // 
+            // salaryTextBox
+            // 
+            this.salaryTextBox.Location = new System.Drawing.Point(633, 78);
+            this.salaryTextBox.Name = "salaryTextBox";
+            this.salaryTextBox.Size = new System.Drawing.Size(142, 20);
+            this.salaryTextBox.TabIndex = 66;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(602, 79);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(25, 13);
+            this.label13.TabIndex = 65;
+            this.label13.Text = "ЗП:";
             // 
             // label4
             // 
@@ -491,37 +527,39 @@
             this.закрытьToolStripMenuItem.Text = "Закрыть";
             this.закрытьToolStripMenuItem.Click += new System.EventHandler(this.закрытьToolStripMenuItem_Click);
             // 
-            // label13
+            // comboBox1
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(602, 79);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(25, 13);
-            this.label13.TabIndex = 65;
-            this.label13.Text = "ЗП:";
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "fast-resume.ru",
+            "gmail.com",
+            "hh.ru",
+            "invited.ru",
+            "Job-MO.ru",
+            "job.ru",
+            "joblab.ru",
+            "jobool.com",
+            "joinfashion.com",
+            "mail.ru",
+            "rabota.ru",
+            "retailstars.ru",
+            "superjob.ru",
+            "vk.com",
+            "www.72.ru",
+            "Анкета в магазине / ЦО / Авито.ru"});
+            this.comboBox1.Location = new System.Drawing.Point(901, 76);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(180, 21);
+            this.comboBox1.TabIndex = 69;
             // 
-            // salaryTextBox
+            // label15
             // 
-            this.salaryTextBox.Location = new System.Drawing.Point(633, 78);
-            this.salaryTextBox.Name = "salaryTextBox";
-            this.salaryTextBox.Size = new System.Drawing.Size(142, 20);
-            this.salaryTextBox.TabIndex = 66;
-            // 
-            // metroTextBox
-            // 
-            this.metroTextBox.Location = new System.Drawing.Point(901, 46);
-            this.metroTextBox.Name = "metroTextBox";
-            this.metroTextBox.Size = new System.Drawing.Size(180, 20);
-            this.metroTextBox.TabIndex = 67;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(809, 52);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(86, 13);
-            this.label14.TabIndex = 68;
-            this.label14.Text = "Cтанция метро:";
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(809, 83);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(41, 13);
+            this.label15.TabIndex = 70;
+            this.label15.Text = "Бренд:";
             // 
             // mainForm
             // 
@@ -590,6 +628,8 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox metroTextBox;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
