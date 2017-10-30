@@ -42,6 +42,7 @@ namespace ZaraCut
             //result.MessageColor = Color.Red;
         }
 
+
         private List<Brand> LoadBrandsFromXML()
         {
             List<Brand> brands = new List<Brand>();
@@ -66,7 +67,9 @@ namespace ZaraCut
                 Console.WriteLine();
             }
             //var sortBrands
-            var sortBrands = brands.OrderBy(u => u.Name);
+            var sortBrands =
+                from u in brands where u.Visible == true orderby u.Name select u;
+            //brands.OrderBy(u => u.Name).Where(u=>u.Visible==true);
             brands = null;
             brands = new List<Brand>();
             foreach (Brand brand in sortBrands)
