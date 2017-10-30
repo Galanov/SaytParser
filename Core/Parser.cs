@@ -18,6 +18,13 @@ namespace ZaraCut.Core
            
         }
 
+        public Anketa ParseRetailStar(string html)
+        {
+            Anketa anketa = new Anketa();
+
+            return anketa;
+        }
+
         public Anketa ParseHH(string html, string html2, string html3, string html4)
         {
             Anketa anketa = new Anketa();

@@ -11,6 +11,6 @@ namespace ZaraCut.Core
         //{
         //    return "test";
         //}
-        public static string SQLPath = "server=192.168.0.18;uid=zara;pwd=zara123;database=zara";
+        public static string SQLPath = "server=192.168.0.18;uid=zara;pwd=zara123;database=zara2";
     }
 }

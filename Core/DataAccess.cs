@@ -150,7 +150,7 @@ namespace ZaraCut.Core
                 anketa.Info = CutString(anketa.Info, 255);
                 sqlCommand = new SqlCommand(@"EXECUTE SaveAnketa @LastName  ,@Name  ,@MiddleName  ,@MobPhone  
 ,@HomePhone  ,@Email  ,@CityId  ,@Birthday  ,@Sex,@Citizenship  ,@SourceId ,@Age ,@Salary,@Vacancy,@Info ,@StationHomeVal
-,@CardId  ,@OutCardId OUTPUT  ,@loginId  ,@SessionId, @visit ", sqlConnection);
+,@CardId  ,@OutCardId OUTPUT  ,@loginId  ,@SessionId, @visit ,@Brand", sqlConnection);
                 SqlParameterCollection parameters = sqlCommand.Parameters;
                 parameters.Add("LastName", SqlDbType.VarChar, 50);
                 parameters["LastName"].Value = anketa.LastName;
@@ -166,6 +166,8 @@ namespace ZaraCut.Core
                 parameters["Email"].Value = anketa.Email;
                 parameters.Add("CityId", SqlDbType.Int);
                 parameters["CityId"].Value = idCity;
+                parameters.Add("Brand", SqlDbType.Int);
+                parameters["Brand"].Value = anketa.Brand;
                 //parameters.Add("CardSourceId", SqlDbType.Int);
                 //parameters["CardSourceId"].Value = anketa.Source;
                 parameters.Add("StationHomeVal", SqlDbType.VarChar, 50);

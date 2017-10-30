@@ -38,11 +38,20 @@ namespace ZaraCut
             user = new User();
             result = new Result(infoLabel);
             brands = LoadBrandsFromXML();
+            AddBrandsInComboBox(brands);
             //result.Message = "Test";
             //result.MessageColor = Color.Red;
         }
 
-
+        private void AddBrandsInComboBox(List<Brand> brands)
+        {
+            foreach (var item in brands)
+            {
+                brandsComboBox.Items.Add(item.Name);
+            }
+            brandsComboBox.SelectedIndex = 0;
+        }
+        
         private List<Brand> LoadBrandsFromXML()
         {
             List<Brand> brands = new List<Brand>();
@@ -62,22 +71,18 @@ namespace ZaraCut
                     Console.WriteLine("Цена: {0}", visibleElement.Value);
                     brands.Add(new Brand() { Id = Convert.ToInt32(idElement.Value), Name = nameElement.Value, Visible = Convert.ToBoolean(visibleElement.Value) });
                 }
-                
-
                 Console.WriteLine();
             }
             //var sortBrands
-            var sortBrands =
-                from u in brands where u.Visible == true orderby u.Name select u;
+            var sortBrands = from u in brands where u.Visible == true orderby u.Name select u;
             //brands.OrderBy(u => u.Name).Where(u=>u.Visible==true);
             brands = null;
             brands = new List<Brand>();
+            brands.Add(new Brand() { Name = "-", Visible = true, Id = 0 });
             foreach (Brand brand in sortBrands)
             {
                 brands.Add(brand);
             }
-                
-
             return brands;
         }
 
@@ -136,6 +141,7 @@ namespace ZaraCut
                 if (anketa != null)
                 {
                     anketa.Info = dopInfoTextBox.Text;
+                    anketa.Brand = brandsComboBox.SelectedIndex;
                     ShowResultOnForm(anketa);
                 }
             }
