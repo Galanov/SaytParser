@@ -30,7 +30,7 @@ namespace ZaraCut
         public mainForm()
         {
             InitializeComponent();
-            webSessionProvider1.DataPath = System.Environment.CurrentDirectory;
+            webSessionProvider1.DataPath = System.Environment.CurrentDirectory+"\\Sessions";
             //webView.ShowCreatedWebView += NewPage;
             //WebControl webControl = new WebControl();
             tabControl1.ContextMenuStrip = contextMenuStrip1;
@@ -90,7 +90,55 @@ namespace ZaraCut
         {
             
         }
-        
+
+        private void ParseRetailStars()
+        {
+            WebControl webC;
+            try
+            {
+                webC = (WebControl)tabControl1.SelectedTab.Controls[0];
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            string result="";
+            var parser = new HtmlParser();
+            var document = parser.Parse(webC.HTML);
+            //var result = document.QuerySelector("[class='items']").InnerHtml;
+            var element = document.All.Where(m => m.LocalName == "div" && m.ClassName == "small_card");
+            //document.QuerySelectorAll("div.items");
+            //.cf
+            //document.All.Where(m => m.LocalName == "div" && m.ClassName == "text");
+            foreach (var item in element)
+            {
+                result = item.OuterHtml;
+            }
+
+            if (result != "")
+            {
+                using (PageParser pageParser = new PageParser())
+                {
+                    anketa = pageParser.ParseRetailStar(result);
+                }
+                if (anketa != null)
+                {
+                    anketa.Info = dopInfoTextBox.Text;
+                    anketa.Brand = brandsComboBox.SelectedIndex;
+                    ShowResultOnForm(anketa);
+                }
+            }
+            else
+            {
+                this.result.Message(Color.Red, "HTML не найден");
+            }
+            //foreach (var item in collection)
+            //{
+
+            //}
+        }
+
         private void ParseHH()
         {
             WebControl webC;
@@ -153,15 +201,6 @@ namespace ZaraCut
 
         private void ClearForm()
         {
-
-            //lastNameTextBox.Text = "";
-            //middleNameTextBox.Text = "";
-            //nameTextBox.Text = "";
-            //mobPhoneTextBox.Text = "";
-            //homePhoneTextBox.Text = "";
-            //cityTextBox.Text = "";
-            //emailTextBox.Text = "";
-            //birthdayTextBox.Text = "";
             foreach (object item in containerGroupBox. Controls)
             {
                 if (item is TextBox)
@@ -270,11 +309,16 @@ namespace ZaraCut
                     {
                         break;
                     }
-                default:
+                case 11:
+                    {
+                        ParseRetailStars();
+                        break;
+                    }
+                    default:
                     break;
             }
         }
-
+        
         private void openSiteButton_Click(object sender, EventArgs e)
         {
             string path = "";
@@ -292,6 +336,7 @@ namespace ZaraCut
                     {
                         path = "http://www.hh.ru";
                         //anketa = new HHAnketa();
+                        tCA.tabPagesName = "hh.ru";
                         break;
                     }
                 case 3:
@@ -304,6 +349,12 @@ namespace ZaraCut
                     }
                 case 5:
                     {
+                        break;
+                    }
+                case 11:
+                    {
+                        path = "http://retailstars.ru";
+                        tCA.tabPagesName = "retailstars";
                         break;
                     }
                 default:

@@ -7,6 +7,7 @@ namespace ZaraCut
 {
     class TabControlAwesomium
     {
+        public string tabPagesName;
         private Point lastClickPos;
         private TabControl tabControl;
         private WebSessionProvider webSessionProvider;
