@@ -41,7 +41,6 @@ C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\bin\Release\ZaraCut.exe.confi
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.exe
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.pdb
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.csproj.App.config
-C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.csprojResolveAssemblyReference.cache
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.LoginForm.resources
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.mainForm.resources
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.Properties.Resources.resources

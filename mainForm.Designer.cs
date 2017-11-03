@@ -535,20 +535,20 @@
             this.закрытьToolStripMenuItem,
             this.очиститьToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(127, 48);
             // 
             // закрытьToolStripMenuItem
             // 
             this.закрытьToolStripMenuItem.Name = "закрытьToolStripMenuItem";
             this.закрытьToolStripMenuItem.ShowShortcutKeys = false;
-            this.закрытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.закрытьToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.закрытьToolStripMenuItem.Text = "Закрыть";
             this.закрытьToolStripMenuItem.Click += new System.EventHandler(this.закрытьToolStripMenuItem_Click);
             // 
             // очиститьToolStripMenuItem
             // 
             this.очиститьToolStripMenuItem.Name = "очиститьToolStripMenuItem";
-            this.очиститьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.очиститьToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.очиститьToolStripMenuItem.Text = "Очистить";
             this.очиститьToolStripMenuItem.Click += new System.EventHandler(this.очиститьToolStripMenuItem_Click);
             // 
@@ -560,7 +560,7 @@
             this.Controls.Add(this.containerGroupBox);
             this.Controls.Add(this.tabControl1);
             this.Name = "mainForm";
-            this.Text = "Form1";
+            this.Text = "Разборщик";
             this.Load += new System.EventHandler(this.mainForm_Load);
             this.containerGroupBox.ResumeLayout(false);
             this.containerGroupBox.PerformLayout();
