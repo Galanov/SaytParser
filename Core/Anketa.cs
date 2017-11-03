@@ -7,12 +7,31 @@ namespace ZaraCut.Core
 {
     public class Anketa
     {
+        //фамилия
+        public string LastName
+        {
+            get;set;
+        }
+        //имя
+        public string FirstName
+        {
+            get;
+            set;
+        }
+        // отчество
+        public string Patronymic
+        {
+            get;
+
+            set;
+        }
+        //дата рождения
         public string Birthday
         {
             get;
             set;
         }
-
+        // город 
         public string City
         {
             get;
@@ -38,19 +57,9 @@ namespace ZaraCut.Core
             set;
         }
 
-        public string LastName
-        {
-            get;
+        
 
-            set;
-        }
-
-        public string Patronymic
-        {
-            get;
-
-            set;
-        }
+        
 
         public string MobPhone
         {
@@ -58,11 +67,7 @@ namespace ZaraCut.Core
             set;
         }
 
-        public string FirstName
-        {
-            get;
-            set;
-        }
+        
 
         public int Nationality
         {

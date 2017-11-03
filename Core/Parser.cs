@@ -21,7 +21,7 @@ namespace ZaraCut.Core
         public Anketa ParseRetailStar(string html)
         {
             Anketa anketa = new Anketa();
-            anketa.Source = 3;//!!! изменить 
+            anketa.Source = 36;
             var parser = new HtmlParser();
             var document = parser.Parse(html);
             #region FIO
@@ -62,7 +62,7 @@ namespace ZaraCut.Core
                     }
             }
             #endregion
-
+            #region Age/Birthday
             string age = ReturnValueFromAnketa(document, "[class='age']");
             if (age!="")
             {
@@ -71,12 +71,50 @@ namespace ZaraCut.Core
                 anketa.Age = masAge[0];
                 anketa.Birthday = GetDate(masAge[1]);
             }
+            #endregion
+            #region Nationality/City
             string returnValue = document.QuerySelector("[class='location']").InnerHtml;
             //returnValue = 
             int n = returnValue.IndexOf("</i>");
             returnValue = returnValue.Substring(n+4);
-            string location = ReturnValueFromAnketa(document, "[class='location']");
-            //парсир город и гражданство
+            string[] masLocation = returnValue.Split(new string[] {"<br>"},StringSplitOptions.RemoveEmptyEntries );
+            switch (masLocation[0].ToLower())
+            {
+                case "российская федерация":
+                    {
+                        anketa.Nationality = 1;
+                        break;
+                    }
+                case "республика беларусь":
+                    {
+                        anketa.Nationality = 2;
+                        break;
+                    }
+                case "казахстан":
+                    {
+                        anketa.Nationality = 3;
+                        break;
+                    }
+                default:
+                    {
+                        anketa.Nationality = 4;
+                        break;
+                    }
+            }
+            anketa.City = masLocation[1];
+            //(new char[] { "<br/>" }, StringSplitOptions.RemoveEmptyEntries);
+            //string location = ReturnValueFromAnketa(document, "[class='location']");
+            #endregion
+            #region MobPhone
+            string mobPhone = ReturnValueFromAnketa(document, "[class='phone']");
+            anketa.MobPhone = GetPhone(mobPhone);
+            #endregion
+            anketa.Email = "";
+            anketa.Gender = -1;
+            anketa.HomePhone = "";
+            anketa.Salary = "";
+            anketa.Vacancy = "";
+            anketa.Metro = "";
             return anketa;
         }
 
@@ -242,6 +280,9 @@ namespace ZaraCut.Core
             phone = phone.Replace(" ", "");
             phone = phone.Replace("\n", "");
             phone = phone.Replace("+7", "8");
+            phone = phone.Replace("(", "");
+            phone = phone.Replace(")", "");
+            phone = phone.Replace("-", "");
             return phone;
         }
         private string GetDate(string date)

@@ -463,14 +463,9 @@ namespace ZaraCut
             }
         }
 
-        private void genderCheckedListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void очиститьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
+            tCA.ClearMemory();
         }
     }
 }

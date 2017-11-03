@@ -148,7 +148,7 @@ namespace ZaraCut.Core
                 anketa.Salary = CutString(anketa.Salary, 100);
                 anketa.Vacancy = CutString(anketa.Vacancy, 255);
                 anketa.Info = CutString(anketa.Info, 255);
-                sqlCommand = new SqlCommand(@"EXECUTE SaveAnketa @LastName  ,@Name  ,@MiddleName  ,@MobPhone  
+                sqlCommand = new SqlCommand(@"EXECUTE SaveAnketa2 @LastName  ,@Name  ,@MiddleName  ,@MobPhone  
 ,@HomePhone  ,@Email  ,@CityId  ,@Birthday  ,@Sex,@Citizenship  ,@SourceId ,@Age ,@Salary,@Vacancy,@Info ,@StationHomeVal
 ,@CardId  ,@OutCardId OUTPUT  ,@loginId  ,@SessionId, @visit ,@Brand", sqlConnection);
                 SqlParameterCollection parameters = sqlCommand.Parameters;
