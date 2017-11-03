@@ -7,6 +7,7 @@ namespace ZaraCut
 {
     class TabControlAwesomium
     {
+        public string tabPagesName;
         private Point lastClickPos;
         private TabControl tabControl;
         private WebSessionProvider webSessionProvider;
@@ -84,7 +85,7 @@ namespace ZaraCut
             //tabControl.TabPages.Insert(tabControl.TabCount - 1, "Новая вкладка");
             //tabControl.TabPages[tabControl.TabCount - 2].Controls.Add(webControl);
             //tabControl.SelectedIndex = tabControl.TabCount - 2;
-            tabControl.TabPages.Add("hh.ru");
+            tabControl.TabPages.Add(tabPagesName);
             tabControl.TabPages[tabControl.TabCount - 1].Controls.Add(webControl);
             tabControl.SelectedIndex = tabControl.TabCount - 1;
         }
