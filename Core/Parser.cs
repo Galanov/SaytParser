@@ -13,9 +13,236 @@ namespace ZaraCut.Core
 {
     class PageParser: IDisposable
     {
-        public void Dispose()
+        public Anketa ParseJobMo(string html)
         {
-           
+            Anketa anketa = new Anketa();
+            anketa.Source = 0;
+            var parser = new HtmlParser();
+            var document = parser.Parse(html);
+            var lines = document.All.Where(m => m.LocalName == "tr");
+            var value="";
+            foreach (var item in lines)
+            {
+                value = item.TextContent.ToString();
+                //value.Replace("\n", "");
+                value = value.Replace("\n", "");
+                value = value.Trim();
+                //switch(value.StartsWith("Муж.")
+            }
+            #region FIO
+            //string fio = ReturnValueFromAnketa(document, "[class='sj_h3']");
+            //string[] newFIO = GetFIO(fio);
+            //int result = newFIO.Length;
+            //switch (result)
+            //{
+            //    case 0:
+            //        {
+            //            // Добавить исключение
+            //            break;
+            //        }
+            //    case 1:
+            //        {
+            //            AddFIOInAnketa(anketa, "---", newFIO[0], "");
+            //            break;
+            //        }
+            //    case 2:
+            //        {
+            //            AddFIOInAnketa(anketa, newFIO[0], newFIO[1], "");
+            //            break;
+            //        }
+            //    case 3:
+            //        {
+            //            AddFIOInAnketa(anketa, newFIO[0], newFIO[1], newFIO[2]);
+            //            break;
+            //        }
+            //    default:
+            //        {
+
+            //            break;
+            //        }
+            //}
+            #endregion
+            return anketa;
+        }
+        public Anketa ParseSuperJob(string html)
+        {
+            Anketa anketa = new Anketa();
+            anketa.Source = 2;
+            var parser = new HtmlParser();
+            var document = parser.Parse(html);
+            #region FIO
+            string fio = ReturnValueFromAnketa(document, "[class='sj_h3']");
+            string[] newFIO = GetFIO(fio);
+            int result = newFIO.Length;
+            switch (result)
+            {
+                case 0:
+                    {
+                        // Добавить исключение
+                        break;
+                    }
+                case 1:
+                    {
+                        AddFIOInAnketa(anketa, "---", newFIO[0], "");
+                        break;
+                    }
+                case 2:
+                    {
+                        AddFIOInAnketa(anketa, newFIO[0], newFIO[1], "");
+                        break;
+                    }
+                case 3:
+                    {
+                        AddFIOInAnketa(anketa, newFIO[0], newFIO[1], newFIO[2]);
+                        break;
+                    }
+                default:
+                    {
+
+                        break;
+                    }
+            }
+            #endregion
+            var element = document.All.Where(m => m.LocalName == "div");
+            //document.QuerySelectorAll("div.items");
+            //.cf
+            //document.All.Where(m => m.LocalName == "div" && m.ClassName == "text");
+            string value = "";
+
+            foreach (var item in element)
+            {
+                try
+                {
+                    value = item.TextContent.ToString();
+                    //value.Replace("\n", "");
+                    value = value.Replace("\n", "");
+                    value = value.Trim();
+                    if (value.StartsWith("Муж.") || value.StartsWith("Жен."))
+                    {
+                        List<string> cityList = GetCity();
+                        string[] masMain = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                        string[] masAgeDate = masMain[1].Split(new char[] { '(' }, StringSplitOptions.RemoveEmptyEntries);
+                        #region CityAndCityzenship
+                        string[] masCityAndCityzenship = value.Split(new string[] { "  " }, StringSplitOptions.RemoveEmptyEntries);
+                        try
+                        {
+                            string[] masCity = masCityAndCityzenship[1].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (var r in masCity)
+                            {
+                                var city = cityList.FirstOrDefault(t => t == r.ToLower());
+                                if (city != null)
+                                {
+                                    anketa.City = city;
+                                    break;
+                                }
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                        try
+                        {
+                            string[] masCityzenship = masCityAndCityzenship[2].Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            foreach (var r in masCityzenship)
+                            {
+                                if (r.ToLower().IndexOf("гражданство") > -1)
+                                {
+                                    string[] mas = r.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                    anketa.Nationality = (mas[1].ToLower().Contains("россия") ? 1 : (mas[1].ToLower().Contains("беларусь") ? 2 : (mas[1].ToLower().Contains("казахстан") ? 3 : 4)));
+                                }
+                            }
+                        }
+                        catch
+                        {
+                        }
+                        #endregion
+                        masAgeDate[1] = masAgeDate[1].Replace(")", "");
+                        anketa.Birthday = GetDate(masAgeDate[1]);
+                        anketa.Age = masAgeDate[0];
+                        switch (masMain[0])
+                        {
+                            case "Муж.":
+                                {
+                                    anketa.Gender = 1;
+                                    break;
+                                }
+                            case "Жен.":
+                                {
+                                    anketa.Gender = 2;
+                                    break;
+                                }
+                            default:
+                                break;
+                        }
+                    }
+                }
+                catch
+                {
+                    value = "";
+                }
+            }
+            string doljnost = ReturnValueFromAnketa(document, "[class='sj_h1 sj_block m_b_2 h_font_weight_light h_word_wrap_break_word']");
+            anketa.Vacancy = doljnost;
+            string price = ReturnValueFromAnketa(document, "[class='h_font_weight_medium']");
+            anketa.Salary = price;
+            //string phone = ReturnValueFromAnketa(document, "[class='sj_block m_t_2 sj_h3 m_b_0']");
+            //string phone2 = ReturnValueFromAnketa(document, "[class='ng-binding']");
+            //string phone3 = ReturnValueFromAnketa(document, "div.sj_h3.m_b_0");
+
+            //phone3 =  GetPhone(phone2);
+            //phone3 = phone2.Remove(11, phone2.Length - 11);
+
+            List<string> test = new List<string>();
+            var res = document.QuerySelectorAll("div.sj_h3.m_b_0");
+            foreach (var item in res)
+            {
+                string val = item.TextContent;
+                val = val.Replace("\n", "");
+                val = val.Trim();
+                val = GetPhone(val);
+                if (val != "")
+                {
+                    val = val.Remove(11, val.Length - 11);
+                    test.Add(val);
+                }
+            }
+            foreach (var item in test)
+            {
+                if (item.StartsWith("849"))
+                {
+                    if (anketa.HomePhone == "")
+                    {
+                        anketa.HomePhone = item;
+                    }
+                }
+                else
+                {
+                    if (anketa.MobPhone == "")
+                    {
+                        anketa.MobPhone = item;
+                    }
+                    else
+                    {
+                        anketa.HomePhone = item;
+                    }
+
+                }
+            }
+            //!! string resPhone = GetPhone(phone != "" ? phone : (phone2 != "" ? phone2 : ""));
+            //anketa.MobPhone = resPhone.Remove(11, resPhone.Length - 11);
+            string email = ReturnValueFromAnketa(document, "[class='sj_block m_t_0 sj_h3 m_b_0 h_display_inline_block']");
+            //var t =document.QuerySelectorAll("a.sj_block.m_t_0.sj_h3.m_b_0.h_display_inline_block");
+            email = ReturnValueFromAnketa(document, "a.sj_block.m_t_0.sj_h3.m_b_0.h_display_inline_block");
+            //email = ReturnValueFromAnketa(document, "a.ng-binding");
+            email = email.Replace("\n", "");
+            email = email.Trim();
+            anketa.Email = email;
+            anketa.Metro = "";
+
+            return anketa;
         }
 
         public Anketa ParseRetailStar(string html)
@@ -364,7 +591,7 @@ namespace ZaraCut.Core
         private string GetIdMetro(string metro)
         {
             string idMetro = "";
-            SqlConnection sqlConnection = new SqlConnection(Path.SQLPath);
+            SqlConnection sqlConnection = new SqlConnection(DBPath.SQLPath);
             sqlConnection.Open();
             //sqlConnection.Open();
             SqlCommand sqlCommand = new SqlCommand("select isnull(max(stationid),0) stationid from station where station ='" + metro.Trim() + "'", sqlConnection);
@@ -385,7 +612,7 @@ namespace ZaraCut.Core
         }
         private int GetIdCity(string city)
         {
-            SqlConnection sqlConnection = new SqlConnection(Path.SQLPath);
+            SqlConnection sqlConnection = new SqlConnection(DBPath.SQLPath);
             sqlConnection.Open();
             int idCity = 0;
             //sqlConnection.Open();
@@ -428,6 +655,30 @@ namespace ZaraCut.Core
         {
             string[] masfio = fio.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return masfio;
+        }
+        private List<string> GetCity()
+        {
+            List<string> city = new List<string>();
+            SqlConnection sqlConnection = new SqlConnection(DBPath.SQLPath);
+            SqlCommand sqlCommand = new SqlCommand("select city from city ", sqlConnection);
+            sqlConnection.Open();
+            SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            try
+            {
+                while (sqlDataReader.Read())
+                {
+                    city.Add(sqlDataReader["City"].ToString().ToLower());
+                }
+            }
+            finally
+            {
+                sqlDataReader.Close();
+            }
+            return city;
+        }
+        public void Dispose()
+        {
+
         }
     }
 }

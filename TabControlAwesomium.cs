@@ -21,6 +21,7 @@ namespace ZaraCut
         {
             this.tabControl = tabControl;
             this.webSessionProvider = webSessionProvider;
+            
         }
 
 
@@ -37,6 +38,7 @@ namespace ZaraCut
         public void OpenPage(string url)
         {
             WebControl webControl = new_WebControl();
+            
             webControl.Source = new Uri(url);
             CreateTabPage(webControl);
         }

@@ -7,6 +7,12 @@ namespace ZaraCut.Core
 {
     public class Anketa
     {
+        public Anketa()
+        {
+            this.MobPhone = "";
+            this.HomePhone = "";
+            this.Nationality = 4;
+        }
         //фамилия
         public string LastName
         {

@@ -11,9 +11,9 @@ using Awesomium.Windows;
 using Awesomium.Windows.Forms;
 using ZaraCut.Core;
 using System.Data.SqlClient;
-using ZaraCut.Core.HH;
 using AngleSharp.Parser.Html;
 using System.Xml.Linq;
+using System.IO;
 
 namespace ZaraCut
 {
@@ -26,6 +26,26 @@ namespace ZaraCut
         Result result;
         List<Brand> brands;
         
+        private void ClearMemory()
+        {
+            string folder = System.Environment.CurrentDirectory + "\\Sessions";
+            float folderSize = 0.0f;
+            DirectoryInfo dI = new DirectoryInfo(folder);
+            FileInfo[] files = dI.GetFiles("*", SearchOption.AllDirectories);
+            foreach (FileInfo file in files)
+            {
+                folderSize += file.Length;
+            }
+            int sizeDirectory = Convert.ToInt32(folderSize) / 1000000;
+            //MessageBox.Show((sizeDirectory).ToString());
+            if (sizeDirectory>300)
+            {
+                foreach (FileInfo file in files)
+                {
+                    file.Delete();
+                }
+            }
+        }
         private string VersionId = "2";
         public mainForm()
         {
@@ -57,21 +77,30 @@ namespace ZaraCut
             List<Brand> brands = new List<Brand>();
             string path = "";
             path = Environment.CurrentDirectory + "\\config.xml";
-            XDocument xdoc = XDocument.Load(path);
-            foreach (XElement phoneElement in xdoc.Element("brands").Elements("brand"))
+            XDocument xdoc;
+            try
             {
-                XElement idElement = phoneElement.Element("id");
-                XElement nameElement = phoneElement.Element("name");
-                XElement visibleElement = phoneElement.Element("visible");
-
-                if (idElement != null && nameElement != null && visibleElement != null)
+                xdoc = XDocument.Load(path);
+                foreach (XElement phoneElement in xdoc.Element("brands").Elements("brand"))
                 {
-                    Console.WriteLine("Смартфон: {0}", idElement.Value);
-                    Console.WriteLine("Компания: {0}", nameElement.Value);
-                    Console.WriteLine("Цена: {0}", visibleElement.Value);
-                    brands.Add(new Brand() { Id = Convert.ToInt32(idElement.Value), Name = nameElement.Value, Visible = Convert.ToBoolean(visibleElement.Value) });
+                    XElement idElement = phoneElement.Element("id");
+                    XElement nameElement = phoneElement.Element("name");
+                    XElement visibleElement = phoneElement.Element("visible");
+
+                    if (idElement != null && nameElement != null && visibleElement != null)
+                    {
+                        Console.WriteLine("Смартфон: {0}", idElement.Value);
+                        Console.WriteLine("Компания: {0}", nameElement.Value);
+                        Console.WriteLine("Цена: {0}", visibleElement.Value);
+                        brands.Add(new Brand() { Id = Convert.ToInt32(idElement.Value), Name = nameElement.Value, Visible = Convert.ToBoolean(visibleElement.Value) });
+                    }
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("config.xml Файл не найден. Завершение приложения.");
+                Close();
             }
             //var sortBrands
             var sortBrands = from u in brands where u.Visible == true orderby u.Name select u;
@@ -89,6 +118,92 @@ namespace ZaraCut
         private void saveAnketaButton_Click(object sender, EventArgs e)
         {
             
+        }
+        private void ParseJobMo()
+        {
+            WebControl webC;
+            try
+            {
+                webC = (WebControl)tabControl1.SelectedTab.Controls[0];
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            string result = "";
+            var parser = new HtmlParser();
+            var document = parser.Parse(webC.HTML);
+            //var result = document.QuerySelector("[class='items']").InnerHtml;
+            var element = document.All.Where(m => m.LocalName == "div" && m.ClassName == "main-box");
+            //document.QuerySelectorAll("div.items");
+            //.cf
+            //document.All.Where(m => m.LocalName == "div" && m.ClassName == "text");
+            foreach (var item in element)
+            {
+                result = item.OuterHtml;
+            }
+
+            if (result != "")
+            {
+                using (PageParser pageParser = new PageParser())
+                {
+                    anketa = pageParser.ParseJobMo(result);
+                }
+                if (anketa != null)
+                {
+                    anketa.Info = dopInfoTextBox.Text;
+                    anketa.Brand = brandsComboBox.SelectedIndex;
+                    ShowResultOnForm(anketa);
+                }
+            }
+            else
+            {
+                this.result.Message(Color.Red, "HTML не найден");
+            }
+        }
+        private void ParseSuperJob()
+        {
+            WebControl webC;
+            try
+            {
+                webC = (WebControl)tabControl1.SelectedTab.Controls[0];
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            string result = "";
+            var parser = new HtmlParser();
+            var document = parser.Parse(webC.HTML);
+            //var result = document.QuerySelector("[class='items']").InnerHtml;
+            var element = document.All.Where(m => m.LocalName == "div" && m.ClassName == "ResumeMainHRNew");
+            //document.QuerySelectorAll("div.items");
+            //.cf
+            //document.All.Where(m => m.LocalName == "div" && m.ClassName == "text");
+            foreach (var item in element)
+            {
+                result = item.OuterHtml;
+            }
+
+            if (result != "")
+            {
+                using (PageParser pageParser = new PageParser())
+                {
+                    anketa = pageParser.ParseSuperJob(result);
+                }
+                if (anketa != null)
+                {
+                    anketa.Info = dopInfoTextBox.Text;
+                    anketa.Brand = brandsComboBox.SelectedIndex;
+                    ShowResultOnForm(anketa);
+                }
+            }
+            else
+            {
+                this.result.Message(Color.Red, "HTML не найден");
+            }
         }
 
         private void ParseRetailStars()
@@ -303,10 +418,12 @@ namespace ZaraCut
                     }
                 case 4:
                     {
+                        ParseJobMo();
                         break;
                     }
                 case 5:
                     {
+                       
                         break;
                     }
                 case 11:
@@ -314,11 +431,18 @@ namespace ZaraCut
                         ParseRetailStars();
                         break;
                     }
-                    default:
+                case 12:
+                    {
+                        ParseSuperJob();
+                        break;
+                    }
+                default:
                     break;
             }
         }
+
         
+
         private void openSiteButton_Click(object sender, EventArgs e)
         {
             string path = "";
@@ -345,6 +469,8 @@ namespace ZaraCut
                     }
                 case 4:
                     {
+                        path = "http://www.job-mo.ru";
+                        tCA.tabPagesName = "Job-Mo";
                         break;
                     }
                 case 5:
@@ -355,6 +481,12 @@ namespace ZaraCut
                     {
                         path = "http://retailstars.ru";
                         tCA.tabPagesName = "retailstars";
+                        break;
+                    }
+                case 12:
+                    {
+                        path = "https://www.superjob.ru";
+                        tCA.tabPagesName = "superjob";
                         break;
                     }
                 default:
@@ -393,7 +525,7 @@ namespace ZaraCut
             {
                 base.Close();
             }
-            SqlConnection sqlConnection = new SqlConnection(Path.SQLPath);
+            SqlConnection sqlConnection = new SqlConnection(DBPath.SQLPath);
             SqlCommand sqlCommand = new SqlCommand("EXECUTE StartSession 'Soft','" + loginForm.login.Replace("'", "") + "'", sqlConnection);
             try
             {
@@ -447,6 +579,7 @@ namespace ZaraCut
 
                 throw;
             }
+            ClearMemory();
         }
         protected struct ItemKV
         {

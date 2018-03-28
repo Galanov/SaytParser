@@ -33,7 +33,7 @@ namespace ZaraCut.Core
                 return;
             }
             
-            SqlConnection sqlConnection = new SqlConnection(Path.SQLPath);
+            SqlConnection sqlConnection = new SqlConnection(DBPath.SQLPath);
             sqlConnection.Open();
             #region GetIdCity
             int idCity = GetIdCity(sqlConnection, anketa.City);

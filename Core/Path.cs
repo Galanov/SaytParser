@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ZaraCut.Core
 {
-    static class Path
+    static class DBPath
     {
         //string ReturnXMLPath(string path)
         //{

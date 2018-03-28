@@ -76,3 +76,4 @@ C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\bin\Release\awesomium_process
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\bin\Release\inspector.pak
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\bin\Release\xinput9_1_0.dll
 C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\bin\Release\pdf_js.pak
+C:\Programming\MyCode\ZARA\ZaraClipBrowser\ZaraCut\obj\Release\ZaraCut.csprojResolveAssemblyReference.cache
